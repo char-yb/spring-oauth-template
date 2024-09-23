@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    group:
+      test: "test"
+      local: "local, datasource"
+      dev: "dev, datasource"
+    include:
+      - redis
+      - actuator
+      - docs
+      - security
+  application:
+    name: demo
+
+logging:
+  level:
+    com.social.demo.*: debug
