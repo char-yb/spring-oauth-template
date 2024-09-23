@@ -1,4 +1,4 @@
-package com.payment.demo.common.annotation
+package com.social.demo.common.annotation
 
 import org.springframework.stereotype.Component
 
