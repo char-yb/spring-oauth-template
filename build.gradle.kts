@@ -41,3 +41,16 @@ kotlin {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+// scripts 경로의 pre-commit hook 등록
+tasks.register("addGitPreCommitHook", DefaultTask::class) {
+    group = "setup"
+    description = "Install git hooks"
+    doLast {
+        val hooksDir = project.file(".git/hooks")
+        val scriptDir = project.file("scripts")
+        val preCommit = scriptDir.resolve("pre-commit")
+        preCommit.copyTo(hooksDir.resolve("pre-commit"), overwrite = true)
+        hooksDir.resolve("pre-commit").setExecutable(true)
+    }
+}
