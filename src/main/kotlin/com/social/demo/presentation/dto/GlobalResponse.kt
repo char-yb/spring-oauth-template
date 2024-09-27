@@ -9,15 +9,11 @@ data class GlobalResponse(val success: Boolean, val status: Int, val data: Any, 
 		fun success(
 			status: Int,
 			data: Any,
-		): GlobalResponse {
-			return GlobalResponse(true, status, data, LocalDateTime.now())
-		}
+		) = GlobalResponse(true, status, data, LocalDateTime.now())
 
 		fun fail(
 			status: Int,
 			errorResponse: ErrorResponse,
-		): GlobalResponse {
-			return GlobalResponse(false, status, errorResponse, LocalDateTime.now())
-		}
+		) = GlobalResponse(false, status, errorResponse, LocalDateTime.now())
 	}
 }
