@@ -1,6 +1,6 @@
 package com.social.demo.presentation.config
 
-import com.social.demo.presentation.dto.GlobalResponse
+import com.social.demo.common.model.GlobalResponse
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

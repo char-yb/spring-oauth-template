@@ -1,6 +1,6 @@
 package com.social.demo.exception
 
-import com.social.demo.presentation.dto.GlobalResponse
+import com.social.demo.common.model.GlobalResponse
 import com.social.demo.util.logger
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.ConstraintViolationException

@@ -1,4 +1,4 @@
-package com.social.demo.presentation.dto
+package com.social.demo.common.model
 
 import com.social.demo.exception.ErrorResponse
 import java.time.LocalDateTime
