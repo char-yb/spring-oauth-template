@@ -1,4 +1,4 @@
-package com.social.demo.util
+package com.social.demo.util.logging
 
 import org.slf4j.LoggerFactory
 

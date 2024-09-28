@@ -15,6 +15,7 @@ class MemberEntity private constructor(
 	val nickname: String,
 	val oauthInfo: OauthInfo,
 	val profile: Profile,
+	val role: MemberRole = MemberRole.USER,
 ) {
 	fun toDomain() =
 		Member(
@@ -22,6 +23,7 @@ class MemberEntity private constructor(
 			nickname = nickname,
 			oauthInfo = oauthInfo,
 			profile = profile,
+			role = role,
 		)
 
 	// Proxy 객체 고려하여 equals Override, https://zins.tistory.com/19
@@ -47,6 +49,7 @@ class MemberEntity private constructor(
 					nickname = nickname,
 					oauthInfo = oauthInfo,
 					profile = profile,
+					role = role,
 				)
 			}
 	}

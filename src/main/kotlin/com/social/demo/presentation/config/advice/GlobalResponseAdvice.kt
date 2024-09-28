@@ -1,4 +1,4 @@
-package com.social.demo.presentation.config
+package com.social.demo.presentation.config.advice
 
 import com.social.demo.common.model.GlobalResponse
 import org.springframework.core.MethodParameter

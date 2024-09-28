@@ -1,7 +1,7 @@
 package com.social.demo.exception
 
 import com.social.demo.common.model.GlobalResponse
-import com.social.demo.util.logger
+import com.social.demo.util.logging.logger
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpHeaders
