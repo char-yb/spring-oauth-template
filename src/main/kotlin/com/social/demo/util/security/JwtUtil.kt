@@ -22,7 +22,7 @@ class JwtUtil(
 	private val jwtProperties: JwtProperties,
 ) {
 	fun generateAccessToken(
-		memberId: Long,
+		memberId: String,
 		memberRole: MemberRole,
 	): String {
 		val issuedAt = Date()
@@ -32,7 +32,7 @@ class JwtUtil(
 	}
 
 	fun generateAccessTokenDto(
-		memberId: Long,
+		memberId: String,
 		memberRole: MemberRole,
 	): AccessTokenDto {
 		val issuedAt = Date()
@@ -42,14 +42,14 @@ class JwtUtil(
 		return AccessTokenDto(memberId, memberRole, tokenValue)
 	}
 
-	fun generateRefreshToken(memberId: Long): String {
+	fun generateRefreshToken(memberId: String): String {
 		val issuedAt = Date()
 		val expiredAt =
 			Date(issuedAt.time + jwtProperties.refreshTokenExpirationMilliTime())
 		return buildRefreshToken(memberId, issuedAt, expiredAt)
 	}
 
-	fun generateRefreshTokenDto(memberId: Long): RefreshTokenDto {
+	fun generateRefreshTokenDto(memberId: String): RefreshTokenDto {
 		val issuedAt = Date()
 		val expiredAt =
 			Date(issuedAt.time + jwtProperties.refreshTokenExpirationMilliTime())
@@ -69,7 +69,7 @@ class JwtUtil(
 			val claims: Jws<Claims> = getClaims(token, accessTokenKey)
 
 			return AccessTokenDto(
-				claims.body.subject.toLong(),
+				claims.body.subject.toString(),
 				MemberRole.valueOf(claims.body.get(TOKEN_ROLE_NAME, String::class.java)),
 				token,
 			)
@@ -86,7 +86,7 @@ class JwtUtil(
 			val claims: Jws<Claims> = getClaims(token, refreshTokenKey)
 
 			return RefreshTokenDto(
-				claims.body.subject.toLong(),
+				claims.body.subject.toString(),
 				token,
 				jwtProperties.refreshTokenExpirationTime,
 			)
@@ -127,7 +127,7 @@ class JwtUtil(
 			.setSubject(member.id.toString())
 			.setClaims(
 				mapOf(
-					USER_ID_KEY_NAME to member.oauthInfo?.oauthId,
+					USER_ID_KEY_NAME to member.oauthInfo.oauthId,
 					PROVIDER_KEY_NAME to oAuthProvider.value,
 					TOKEN_ROLE_NAME to MemberRole.TEMPORARY.name,
 				),
@@ -138,7 +138,7 @@ class JwtUtil(
 	}
 
 	private fun buildAccessToken(
-		memberId: Long,
+		memberId: String,
 		memberRole: MemberRole,
 		issuedAt: Date,
 		expiredAt: Date,
@@ -163,13 +163,13 @@ class JwtUtil(
 	}
 
 	private fun buildRefreshToken(
-		memberId: Long,
+		memberId: String,
 		issuedAt: Date,
 		expiredAt: Date,
 	): String {
 		return Jwts.builder()
 			.setHeader(createTokenHeader(TokenType.REFRESH))
-			.setSubject(memberId.toString())
+			.setSubject(memberId)
 			.setIssuedAt(issuedAt)
 			.setExpiration(expiredAt)
 			.signWith(refreshTokenKey)

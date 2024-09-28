@@ -85,7 +85,9 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
 	/** PathVariable, RequestParam, RequestHeader, RequestBody 에서 타입이 일치하지 않을 경우 발생  */
 	@ExceptionHandler(MethodArgumentTypeMismatchException::class)
-	protected fun handleMethodArgumentTypeMismatchException(e: MethodArgumentTypeMismatchException): ResponseEntity<GlobalResponse> {
+	protected fun handleMethodArgumentTypeMismatchException(
+		e: MethodArgumentTypeMismatchException,
+	): ResponseEntity<GlobalResponse> {
 		log.error("MethodArgumentTypeMismatchException : {}", e.message, e)
 		val errorCode: ErrorCode = ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH
 		val errorResponse =
