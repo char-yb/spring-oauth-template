@@ -11,8 +11,10 @@ import com.social.demo.infrastructure.redis.RefreshToken
 import com.social.demo.presentation.dto.auth.response.TokenPairResponse
 import com.social.demo.util.security.JwtUtil
 import io.jsonwebtoken.ExpiredJwtException
+import org.springframework.stereotype.Service
 import java.util.*
 
+@Service
 class JwtTokenProvider(
 	private val jwtUtil: JwtUtil,
 	private val refreshTokenRepository: RefreshTokenRepository,
