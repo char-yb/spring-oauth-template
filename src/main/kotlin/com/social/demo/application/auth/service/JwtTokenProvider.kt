@@ -5,9 +5,9 @@ import com.social.demo.common.constants.SecurityConstants.TOKEN_ROLE_NAME
 import com.social.demo.domain.model.auth.AccessTokenDto
 import com.social.demo.domain.model.auth.RefreshTokenDto
 import com.social.demo.domain.model.member.Member
+import com.social.demo.infrastructure.jpa.auth.entity.RefreshToken
 import com.social.demo.infrastructure.jpa.auth.repository.RefreshTokenRepository
 import com.social.demo.infrastructure.jpa.member.entity.MemberRole
-import com.social.demo.infrastructure.redis.RefreshToken
 import com.social.demo.presentation.dto.auth.response.TokenPairResponse
 import com.social.demo.util.security.JwtUtil
 import io.jsonwebtoken.ExpiredJwtException

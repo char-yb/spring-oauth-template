@@ -1,4 +1,4 @@
-package com.social.demo.infrastructure.redis
+package com.social.demo.infrastructure.jpa.auth.entity
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
