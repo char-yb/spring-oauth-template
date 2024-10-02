@@ -3,6 +3,7 @@ package com.social.demo.infrastructure.jpa.member.entity
 import com.social.demo.domain.model.member.Member
 import com.social.demo.domain.model.member.vo.OauthInfo
 import com.social.demo.domain.model.member.vo.Profile
+import com.social.demo.infrastructure.jpa.BaseEntity
 import jakarta.persistence.*
 import kotlin.reflect.full.isSubclassOf
 
@@ -16,10 +17,10 @@ class MemberEntity private constructor(
 	val oauthInfo: OauthInfo,
 	val profile: Profile,
 	val role: MemberRole = MemberRole.USER,
-) {
+) : BaseEntity() {
 	fun toDomain() =
 		Member(
-			id = id,
+			memberId = id,
 			nickname = nickname,
 			oauthInfo = oauthInfo,
 			profile = profile,
@@ -45,7 +46,7 @@ class MemberEntity private constructor(
 		fun fromDomain(member: Member) =
 			with(member) {
 				MemberEntity(
-					id = id,
+					id = memberId,
 					nickname = nickname,
 					oauthInfo = oauthInfo,
 					profile = profile,
