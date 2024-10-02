@@ -124,7 +124,7 @@ class JwtUtil(
 	): String {
 		return Jwts.builder()
 			.setHeader(createTokenHeader(TokenType.TEMPORARY))
-			.setSubject(member.id.toString())
+			.setSubject(member.memberId)
 			.setClaims(
 				mapOf(
 					USER_ID_KEY_NAME to member.oauthInfo.oauthId,

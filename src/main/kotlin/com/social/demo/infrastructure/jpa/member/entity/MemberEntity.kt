@@ -40,7 +40,7 @@ class MemberEntity private constructor(
 		this::class.isSubclassOf(other::class) ||
 			other::class.isSubclassOf(this::class)
 
-	override fun hashCode(): Int = id.hashCode() ?: 0
+	override fun hashCode(): Int = id.hashCode()
 
 	companion object {
 		fun fromDomain(member: Member) =

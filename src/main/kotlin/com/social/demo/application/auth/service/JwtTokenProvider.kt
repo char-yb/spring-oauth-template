@@ -29,7 +29,7 @@ class JwtTokenProvider(
 	}
 
 	override fun generateTemporaryTokenPair(temporaryMember: Member): TokenPairResponse {
-		val memberId = temporaryMember.id
+		val memberId = temporaryMember.memberId
 		val accessToken = createAccessToken(memberId, MemberRole.TEMPORARY)
 		val refreshToken = createRefreshToken(memberId)
 		return TokenPairResponse.of(accessToken, refreshToken)

@@ -1,6 +1,6 @@
 package com.social.demo.infrastructure.jpa.auth.repository
 
 import com.social.demo.infrastructure.jpa.auth.entity.RefreshToken
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.CrudRepository
 
-interface RefreshTokenRepository : JpaRepository<RefreshToken, String>
+interface RefreshTokenRepository : CrudRepository<RefreshToken, String>

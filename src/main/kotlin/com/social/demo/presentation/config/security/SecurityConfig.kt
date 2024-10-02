@@ -1,5 +1,4 @@
 package com.social.demo.presentation.config.security
-
 import com.social.demo.application.auth.service.JwtTokenProvider
 import com.social.demo.presentation.config.filter.JwtAuthenticationFilter
 import com.social.demo.util.cookie.CookieUtil
@@ -25,11 +24,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
-class WebSecurityConfig(
+class SecurityConfig(
 	private val jwtTokenProvider: JwtTokenProvider,
 	private val cookieUtil: CookieUtil,
 ) {
-
 	@Bean
 	@Throws(Exception::class)
 	fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
