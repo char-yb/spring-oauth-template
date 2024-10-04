@@ -1,4 +1,4 @@
-package com.social.demo.exception
+package com.social.demo.presentation.exception
 
 import org.springframework.http.HttpStatus
 

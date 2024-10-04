@@ -1,4 +1,4 @@
-package com.social.demo.exception
+package com.social.demo.presentation.exception
 
 data class ErrorResponse(val errorClassName: String, val message: String) {
 	companion object {

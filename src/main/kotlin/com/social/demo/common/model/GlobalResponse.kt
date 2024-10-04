@@ -1,6 +1,6 @@
 package com.social.demo.common.model
 
-import com.social.demo.exception.ErrorResponse
+import com.social.demo.presentation.exception.ErrorResponse
 import java.time.LocalDateTime
 
 data class GlobalResponse(val success: Boolean, val status: Int, val data: Any, val timestamp: LocalDateTime) {

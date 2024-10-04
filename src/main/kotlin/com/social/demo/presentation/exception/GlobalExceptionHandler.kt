@@ -1,4 +1,4 @@
-package com.social.demo.exception
+package com.social.demo.presentation.exception
 
 import com.social.demo.common.model.GlobalResponse
 import com.social.demo.util.logging.logger
