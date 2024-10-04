@@ -1,4 +1,4 @@
-package com.social.demo.presentation.config.restClient
+package com.social.demo.external.config.restClient
 
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
