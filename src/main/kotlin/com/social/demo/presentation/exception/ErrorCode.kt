@@ -15,8 +15,10 @@ enum class ErrorCode(
 
 	// apple client
 	APPLE_KEY_CLIENT_FAILED(HttpStatus.BAD_REQUEST, "애플 키 생성에 실패했습니다."),
-	APPLE_TOKEN_CLIENT_FAILED(HttpStatus.BAD_REQUEST, "애플 토큰 생성에 실패했습니다."),
+	APPLE_TOKEN_CLIENT_FAILED(HttpStatus.BAD_REQUEST, "애플 토큰 요청에 실패했습니다."),
 	APPLE_PRIVATE_KEY_ENCODING_FAILED(HttpStatus.BAD_REQUEST, "애플 개인키 인코딩에 실패했습니다."),
+
+	KAKAO_TOKEN_CLIENT_FAILED(HttpStatus.BAD_REQUEST, "카카오 토큰 요청에 실패했습니다."),
 
 	// Member
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다."),
