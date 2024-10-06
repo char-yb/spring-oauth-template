@@ -21,8 +21,6 @@ data class AppleTokenResponse(
 			idToken: String,
 			refreshToken: String,
 			tokenType: String,
-		): AppleTokenResponse {
-			return AppleTokenResponse(accessToken, expiresIn, idToken, refreshToken, tokenType)
-		}
+		) = AppleTokenResponse(accessToken, expiresIn, idToken, refreshToken, tokenType)
 	}
 }

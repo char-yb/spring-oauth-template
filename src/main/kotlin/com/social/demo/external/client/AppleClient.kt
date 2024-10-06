@@ -48,6 +48,48 @@ class AppleClient(
 		private const val APPLE_TOKEN_EXPIRE_MINUTES = 5
 	}
 
+	/**
+	 * Apple로부터 받은 idToken 검증하고 identifier를 추출합니다.
+	 *
+	 * @param authorizationCode
+	 * @return
+	 */
+	fun authenticateFromApple(authorizationCode: String): SocialClientResponse {
+		val tokenRequest: AppleTokenRequest =
+			AppleTokenRequest.of(
+				authorizationCode,
+				appleProperties.dev.clientId,
+				generateAppleClientSecret(),
+				APPLE_GRANT_TYPE,
+			)
+		val appleTokenResponse: AppleTokenResponse = getAppleToken(tokenRequest)
+
+		val keys: Array<AppleKeyResponse> = retrieveAppleKeys()
+		try {
+			val tokenParts: List<String> = appleTokenResponse.idToken.split('.')
+			val headerPart = String(Base64.getDecoder().decode(tokenParts[0]))
+			val headerNode = objectMapper.readTree(headerPart)
+			val kid = headerNode["kid"].asText()
+			val alg = headerNode["alg"].asText()
+
+			val matchedKey: AppleKeyResponse =
+				Arrays.stream(keys)
+					.filter { key -> key.kid == kid && key.alg == alg }
+					.findFirst() // 일치하는 키가 없음 => 만료된 토큰 or 이상한 토큰 => throw
+					.orElseThrow { InvalidParameterException() }
+
+			val claims: Claims =
+				parseIdentifierFromAppleToken(matchedKey, appleTokenResponse.idToken)
+
+			val oauthId: String = claims.get("sub", String::class.java)
+			val email: String = claims.get("email", String::class.java)
+
+			return SocialClientResponse(email, oauthId)
+		} catch (ex: Exception) {
+			throw CustomException(ErrorCode.INTERNAL_SERVER_ERROR)
+		}
+	}
+
 	// apple server에서 받아온 id_token
 	private fun getAppleToken(appleTokenRequest: AppleTokenRequest): AppleTokenResponse {
 		// Prepare form data
@@ -108,68 +150,21 @@ class AppleClient(
 			}
 		}
 
-	/**
-	 * Apple로부터 받은 idToken 검증하고 identifier를 추출합니다.
-	 *
-	 * @param authorizationCode
-	 * @return
-	 */
-	fun authenticateFromApple(authorizationCode: String): SocialClientResponse {
-		val tokenRequest: AppleTokenRequest =
-			AppleTokenRequest.of(
-				authorizationCode,
-				appleProperties.dev.clientId,
-				generateAppleClientSecret(),
-				APPLE_GRANT_TYPE,
-			)
-		val appleTokenResponse: AppleTokenResponse = getAppleToken(tokenRequest)
-
-		println("appleTokenResponse: $appleTokenResponse")
-		val keys: Array<AppleKeyResponse> = retrieveAppleKeys()
-		try {
-			val tokenParts: List<String> = appleTokenResponse.idToken.split('.')
-			val headerPart = String(Base64.getDecoder().decode(tokenParts[0]))
-			val headerNode = objectMapper.readTree(headerPart)
-			val kid = headerNode["kid"].asText()
-			val alg = headerNode["alg"].asText()
-
-			val matchedKey: AppleKeyResponse =
-				Arrays.stream(keys)
-					.filter { key -> key.kid == kid && key.alg == alg }
-					.findFirst() // 일치하는 키가 없음 => 만료된 토큰 or 이상한 토큰 => throw
-					.orElseThrow { InvalidParameterException() }
-
-			val claims: Claims =
-				parseIdentifierFromAppleToken(matchedKey, appleTokenResponse.idToken)
-
-			val oauthId: String = claims.get("sub", String::class.java)
-			val email: String = claims.get("email", String::class.java)
-
-			return SocialClientResponse(email, oauthId)
-		} catch (ex: Exception) {
-			throw CustomException(ErrorCode.INTERNAL_SERVER_ERROR)
-		}
-	}
-
-	private fun retrieveAppleKeys(): Array<AppleKeyResponse> {
-		val keyListResponse: AppleKeyListResponse =
-			restClient
-				.get()
-				.uri(APPLE_JWK_SET_URL)
-				.header(HttpHeaders.CONTENT_TYPE, APPLICATION_URLENCODED)
-				.exchange<AppleKeyListResponse> { _, response ->
-					if (!response.statusCode.is2xxSuccessful) {
-						throw CustomException(
-							ErrorCode.APPLE_KEY_CLIENT_FAILED,
-						)
-					}
-					Objects.requireNonNull(
-						response.bodyTo(AppleKeyListResponse::class.java),
-					)!!
+	private fun retrieveAppleKeys(): Array<AppleKeyResponse> =
+		restClient
+			.get()
+			.uri(APPLE_JWK_SET_URL)
+			.header(HttpHeaders.CONTENT_TYPE, APPLICATION_URLENCODED)
+			.exchange<AppleKeyListResponse> { _, response ->
+				if (!response.statusCode.is2xxSuccessful) {
+					throw CustomException(
+						ErrorCode.APPLE_KEY_CLIENT_FAILED,
+					)
 				}
-
-		return keyListResponse.keys
-	}
+				Objects.requireNonNull(
+					response.bodyTo(AppleKeyListResponse::class.java),
+				)!!
+			}.keys
 
 	@Throws(JsonProcessingException::class, ParseException::class, JOSEException::class)
 	private fun parseIdentifierFromAppleToken(
