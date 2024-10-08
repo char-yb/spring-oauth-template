@@ -1,3 +1,7 @@
 package com.social.demo.domain.gateway.member
 
-interface MemberGateway
+import com.social.demo.domain.model.member.Member
+
+interface MemberGateway {
+	fun findById(id: String): Member
+}
