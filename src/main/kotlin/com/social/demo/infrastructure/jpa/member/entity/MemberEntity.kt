@@ -10,8 +10,8 @@ import kotlin.reflect.full.isSubclassOf
 @Entity(name = "member")
 class MemberEntity private constructor(
 	@Id
-	@Column(name = "id", length = 26, columnDefinition = "CHAR(26)", nullable = false)
-	val id: String,
+	@Column(name = "member_id", length = 26, columnDefinition = "CHAR(26)", nullable = false)
+	val memberId: String,
 	@Column(name = "name", nullable = false)
 	val nickname: String,
 	val oauthInfo: OauthInfo,
@@ -20,7 +20,7 @@ class MemberEntity private constructor(
 ) : BaseEntity() {
 	fun toDomain() =
 		Member(
-			memberId = id,
+			memberId = memberId,
 			nickname = nickname,
 			oauthInfo = oauthInfo,
 			profile = profile,
@@ -32,7 +32,7 @@ class MemberEntity private constructor(
 		if (this === other) return true
 		if (other !is MemberEntity) return false
 		if (!compareClassesIncludeProxy(other)) return false
-		if (id != other.id) return false
+		if (memberId != other.memberId) return false
 		return true
 	}
 
@@ -40,13 +40,13 @@ class MemberEntity private constructor(
 		this::class.isSubclassOf(other::class) ||
 			other::class.isSubclassOf(this::class)
 
-	override fun hashCode(): Int = id.hashCode()
+	override fun hashCode(): Int = memberId.hashCode()
 
 	companion object {
 		fun fromDomain(member: Member) =
 			with(member) {
 				MemberEntity(
-					id = memberId,
+					memberId = memberId,
 					nickname = nickname,
 					oauthInfo = oauthInfo,
 					profile = profile,

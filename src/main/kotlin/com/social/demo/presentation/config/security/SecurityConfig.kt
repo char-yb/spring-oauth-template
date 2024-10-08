@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
-import org.springframework.security.config.Customizer
 import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -76,23 +75,10 @@ class SecurityConfig(
 		return BCryptPasswordEncoder()
 	}
 
-	@Throws(Exception::class)
-	private fun defaultFilterChain(http: HttpSecurity) {
-		http.httpBasic { obj: HttpBasicConfigurer<HttpSecurity> -> obj.disable() }
-			.formLogin { obj: FormLoginConfigurer<HttpSecurity> -> obj.disable() }
-			.cors(Customizer.withDefaults())
-			.csrf { obj: CsrfConfigurer<HttpSecurity> -> obj.disable() }
-			.sessionManagement { session: SessionManagementConfigurer<HttpSecurity?> ->
-				session.sessionCreationPolicy(
-					SessionCreationPolicy.STATELESS,
-				)
-			}
-	}
-
 	@Bean
 	fun corsConfigurationSource(): CorsConfigurationSource {
 		val configuration = CorsConfiguration()
-		// TODO: CORS 임시 전체 허용
+		// TODO: CORS 임시 전체 허용이지만, 실제 서비스에서는 필요한 도메인만 허용해야 함
 		configuration.addAllowedOriginPattern("*")
 
 		configuration.addAllowedHeader("*")
