@@ -19,7 +19,7 @@ import java.util.function.Consumer
 
 @RestControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
-	val log = logger()
+	private val log by logger()
 
 	override fun handleExceptionInternal(
 		ex: Exception,
