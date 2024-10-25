@@ -6,4 +6,12 @@ data class SocialLoginCommand(
 	val oAuthProvider: OAuthProvider,
 	val oauthId: String,
 	val email: String,
-)
+) {
+	companion object {
+		fun of(
+			oAuthProvider: OAuthProvider,
+			oauthId: String,
+			email: String,
+		) = SocialLoginCommand(oAuthProvider, oauthId, email)
+	}
+}
