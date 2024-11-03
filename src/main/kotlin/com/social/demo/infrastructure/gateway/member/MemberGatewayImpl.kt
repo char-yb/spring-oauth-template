@@ -14,4 +14,15 @@ class MemberGatewayImpl(
 	override fun findById(id: String): Member {
 		return memberRepository.findById(id).orElseThrow { CustomException(ErrorCode.MEMBER_NOT_FOUND) }.toDomain()
 	}
+
+	override fun findByOauthInfoOauthProviderAndOauthInfoOauthId(
+		provider: String,
+		oauthId: String,
+	): Member? {
+		return memberRepository.findByOauthInfoOauthProviderAndOauthInfoOauthId(provider, oauthId)?.toDomain()
+	}
+
+	override fun save(member: Member): Member {
+		return memberRepository.save(member.toEntity()).toDomain()
+	}
 }
